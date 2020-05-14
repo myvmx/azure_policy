@@ -1,0 +1,40 @@
+ "properties": {
+    "displayName": "Append from resource group to resource",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Append specific tag name in parameters and its value if tag does not exist on resources deployed ",
+    
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'supportteam'"
+        },
+        "defaultValue": "tag name"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
+          },
+          {
+            "value": "[resourceGroup().tags[parameters('tagName')]]",
+            "exists": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "append",
+        "details": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "value": "[resourceGroup().tags[parameters('tagName')]]"
+          }
+        ]
+      }
+    }
+ }
