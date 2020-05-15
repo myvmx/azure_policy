@@ -1,0 +1,40 @@
+
+  "properties": {
+    "displayName": "Replace tag to resources",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Replace tag value on resource if it is not the same value as the resource group, to be used if you move resources around resource groups",
+    
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
+        },
+        "defaultValue": "Replace with name of tag"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "notEquals": "[resourceGroup().tags[parameters('tagName')]]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          "operations": [
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "value": "[resourceGroup().tags[parameters('tagName')]]"
+            }
+          ]
+        }
+      }
+    }
+  }
