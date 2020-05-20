@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "displayName": "Allowed tag value at Resource Group from a listed of allowed values",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Policy which defines the required tags and the allowed values"
+    
+    },
+    "parameters": {
+      "listOfAllowedValues": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "listOfAllowedValues",
+          "description": "Environment Value"
+        },
+        "allowedValues": [
+          "preproduction",
+          "development",
+          "production"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions/resourcegroups"
+          },
+          {
+            "not": {
+              "field": "tags.environment",
+              "in": "[parameters('listOfAllowedValues')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "audit"
+      }
+    }
+  
+}
