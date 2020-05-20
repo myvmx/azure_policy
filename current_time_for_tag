@@ -1,0 +1,41 @@
+{
+  "properties": {
+    "displayName": "Add time tag to resources",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Get the current time to add to resource"
+    
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
+        },
+        "defaultValue": "created_on"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
+          }
+        ]
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          "operations": [
+            {
+              "operation": "add",
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "value": "[take(utcNow(), 10)]"
+            }
+          ]
+        }
+      }
+    }
+  }
+  }
