@@ -1,0 +1,41 @@
+{
+  "properties": {
+    "displayName": "Remove found tag and remove it from resource ",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Remove the tag from resource. Not sure if this works for resource groups as well as using indexed mode",
+    
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
+        },
+        "defaultValue": "tagname"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          
+          "operations": [
+            {
+              "operation": "remove",
+              "field": "[concat('tags[', parameters('tagName'), ']')]"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
