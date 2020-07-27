@@ -1,6 +1,6 @@
 {
   "properties": {
-    "displayName": "Check if VM Boot Diagnostics Profile is enabled",
+    "displayName": "Check if VM Boot Diagnostics Profile is enabled - https://github.com/Azure/azure-policy/issues/154",
     "policyType": "Custom",
     "mode": "All",
     "parameters": {},
