@@ -1,0 +1,52 @@
+{
+  "properties": {
+    "displayName": "Replace a specific tag value on resources with a new one ",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Replace tag value on a resource with a new one",
+  
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
+        }
+      },
+      "tagValue": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Old Tag Value",
+          "description": "Value of the tag, such as 'production'"
+        }
+      },
+      "newtagValue": {
+        "type": "String",
+        "metadata": {
+          "displayName": "New Tag Value",
+          "description": "Value of the tag, such as 'pre-production'"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "[concat('tags[', parameters('tagName'), ']')]",
+        "equals": "[parameters('tagValue')]"
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          
+          "operations": [
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "value": "[parameters('newtagValue')]"
+            }
+          ]
+        }
+      }
+    }
+  }
+
+}
