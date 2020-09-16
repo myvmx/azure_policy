@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "displayName": "Add tag to resource disk with servername",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "To add server_name tag to disk if it does not exist and to match it to the managedby ID servername",
+    "metadata": {
+    },
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag"
+        },
+        "defaultValue": "server_name"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/disks"
+          }
+        ]
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          "roleDefinitionIds": [
+            ""
+          ],
+          "operations": [
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "value": "[substring(field('Microsoft.Compute/disks/managedBy'), add(lastIndexOf(field('Microsoft.Compute/disks/managedBy'), '/'), 1), sub(length(field('Microsoft.Compute/disks/managedBy')),add(lastIndexOf(field('Microsoft.Compute/disks/managedBy'), '/'), 1)))]"
+            }
+          ]
+        }
+      }
+    }
+  }
