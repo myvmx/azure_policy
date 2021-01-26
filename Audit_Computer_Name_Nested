@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "displayName": "Server Naming Convention",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Audit where match computer name in nested rule",
+    
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "name",
+                "contains": "%whatever1%"
+              },
+              {
+                "field": "name",
+                "contains": "%whatever2%"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "audit"
+              }
+    }
+  }
+}
