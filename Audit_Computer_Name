@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Server Naming Convention",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description" : "Audit where it matches the computer name below"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "field": "name",
+            "equals": "%ReplaceComputerName%"
+          }
+                ]
+      },
+      "then": {
+        "effect": "audit"
+              }
+               }
+}
