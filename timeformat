@@ -1,0 +1,37 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "tags[maintenance time]",
+              "exists": false
+            },
+            {
+              "field": "tags[maintenance time]",
+              "notmatch": "##:##"
+            },
+            {
+              "value": "[if(equals(length(field('tags[maintenance time]')), 5), substring(field('tags[maintenance time]'), 0, 2), 'String length is incorrect it should equal 5')]",
+              "greater": "23"
+            },
+            {
+              "value": "[if(equals(length(field('tags[maintenance time]')), 5), substring(field('tags[maintenance time]'), 3, 2), 'String length is incorrect it should equal 5')]",
+              "greater": "59"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
