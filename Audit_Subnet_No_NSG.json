@@ -22,7 +22,13 @@
             "field": "name",
             "equals": "AzureFirewallSubnet"
           }
-        }
+        },
+        {
+            "not": {
+              "field": "name",
+              "equals": "azurefirewallmanagementsubnet"
+            }
+          }
       ]
     },
     "then": {
