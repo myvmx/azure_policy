@@ -1,0 +1,33 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allof": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Network/virtualNetworks/subnets"
+        },
+        {
+          "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup",
+          "exists": false
+        },
+        {
+          "not": {
+            "field": "name",
+            "equals": "GatewaySubnet"
+          }
+        },
+        {
+          "not": {
+            "field": "name",
+            "equals": "AzureFirewallSubnet"
+          }
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
