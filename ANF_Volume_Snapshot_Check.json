@@ -1,0 +1,29 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+        },
+        {
+          "anyof": [
+            {
+              "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/dataProtection.snapshot.snapshotPolicyId",
+              "exists": false
+            },
+            {
+              "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/dataProtection.snapshot.snapshotPolicyId",
+              "equals": ""
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
