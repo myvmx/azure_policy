@@ -1,0 +1,21 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.NetApp/netAppAccounts"
+        },
+        {
+          "field": "Microsoft.NetApp/netAppAccounts/activeDirectories[*].aesEncryption",
+          "notequals": false
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
