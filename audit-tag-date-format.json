@@ -1,0 +1,53 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "tags[created date]",
+              "exists": false
+            },
+            {
+              "field": "tags[created date]",
+              "notmatch": "##/##/####"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 0, 2), 'String length is incorrect it should equal 10')]",
+              "greater": "31"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 0, 2), 'String length is incorrect it should equal 10')]",
+              "less": "01"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 3, 2), 'String length is incorrect it should equal 10')]",
+              "greater": "12"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 3, 2), 'String length is incorrect it should equal 10')]",
+              "less": "01"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 6, 4), 'String length is incorrect it should equal 10')]",
+              "greater": "2050"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 6, 4), 'String length is incorrect it should equal 10')]",
+              "less": "2022"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
