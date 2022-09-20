@@ -1,0 +1,37 @@
+{
+  "mode": "Indexed",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Compute/virtualMachines"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "tags[maintenance duration]",
+              "exists": false
+            },
+            {
+              "field": "tags[maintenance duration]",
+              "notmatch": "##:##"
+            },
+            {
+              "value": "[if(equals(length(field('tags[maintenance duration]')), 5), substring(field('tags[maintenance duration]'), 0, 2), 'Value cannot be greater than 99 hours')]",
+              "greater": "99"
+            },
+            {
+              "value": "[if(equals(length(field('tags[maintenance duration]')), 5), substring(field('tags[maintenance duration]'), 3, 2), 'Value cannot be greater than 59 minutes')]",
+              "greater": "59"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
