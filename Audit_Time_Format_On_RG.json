@@ -1,0 +1,53 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "tags[created date]",
+              "exists": false
+            },
+            {
+              "field": "tags[created date]",
+              "notmatch": "##/##/####"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 0, 2), 'Day of month should not be greater than 31')]",
+              "greater": "31"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 0, 2), 'Day of month should not be less than 01')]",
+              "less": "01"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 3, 2), 'Month should not be greater than 12')]",
+              "greater": "12"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 3, 2), 'Month should not be less than 01')]",
+              "less": "01"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 6, 4), 'Year should not be greater than 2050')]",
+              "greater": "2050"
+            },
+            {
+              "value": "[if(equals(length(field('tags[created date]')), 10), substring(field('tags[created date]'), 6, 4), 'Year should not be less than 2022')]",
+              "less": "2022"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
