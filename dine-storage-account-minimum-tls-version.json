@@ -1,0 +1,56 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Storage/storageAccounts"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "Microsoft.Storage/storageAccounts/minimumTlsVersion",
+              "exists": "false"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts/minimumTlsVersion",
+              "notEquals": "TLS1_2"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "modify",
+      "details": {
+        "roleDefinitionIds": [
+          "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        ],
+        "conflictEffect": "audit",
+        "operations": [
+          {
+            "operation": "addOrReplace",
+            "field": "Microsoft.Storage/storageAccounts/minimumTlsVersion",
+            "value": "[parameters('tls_version')]"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "tls_version": {
+      "type": "String",
+      "metadata": {
+        "displayName": "TLS Version",
+        "description": "Version of TLS to have as default"
+      },
+      "allowedValues": [
+        "TLS1_0",
+        "TLS1_1",
+        "TLS1_2"
+      ],
+      "defaultValue": "TLS1_2"
+    }
+  }
+}
