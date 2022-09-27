@@ -1,0 +1,49 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.EventHub/namespaces"
+        },
+        {
+          "field": "Microsoft.EventHub/namespaces/minimumTlsVersion",
+          "notEquals": "1.2"
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "conflictEffect": "audit",
+        "roleDefinitionIds": [
+          "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        ],
+        "operations": [
+          {
+            "condition": "[greaterOrEquals(requestContext().apiVersion, '2022-01-01-preview')]",
+            "operation": "addOrReplace",
+            "field": "Microsoft.EventHub/namespaces/minimumTlsVersion",
+            "value": "1.2"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      },
+      "allowedValues": [
+        "Modify",
+        "Disabled",
+        "Audit"
+      ],
+      "defaultValue": "Modify"
+    }
+  }
+}
