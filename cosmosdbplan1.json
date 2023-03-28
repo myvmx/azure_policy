@@ -1,0 +1,29 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.DocumentDB/databaseAccounts"
+        },
+        {
+          "field": "Microsoft.DocumentDB/databaseAccounts/locations[*].isZoneRedundant",
+          "notequals": false
+        },
+        {
+          "field": "Microsoft.DocumentDB/databaseAccounts/backupPolicy.type",
+          "notequals": "Periodic"
+        },
+        {
+          "field": "Microsoft.DocumentDB/databaseAccounts/backupPolicy.Periodic.periodicModeProperties.backupStorageRedundancy",
+          "equals": "Local"
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
