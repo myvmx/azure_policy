@@ -1,0 +1,25 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.ServiceBus/namespaces"
+        },
+        {
+          "field": "Microsoft.ServiceBus/namespaces/sku.name",
+          "notequals": "Standard"
+        },
+        {
+          "field": "Microsoft.ServiceBus/namespaces/sku.tier",
+          "notequals": "Standard"
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
