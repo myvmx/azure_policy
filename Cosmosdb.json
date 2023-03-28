@@ -1,0 +1,38 @@
+{
+
+    "mode": "All",
+    "metadata": {
+      "createdBy": "c45bdf51-26aa-4440-ab55-c414c4d57b3b",
+      "createdOn": "2022-08-12T15:41:04.279586Z",
+      "updatedBy": "c45bdf51-26aa-4440-ab55-c414c4d57b3b",
+      "updatedOn": "2022-08-12T22:19:52.909301Z"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DocumentDB/databaseAccounts"
+          },
+          {
+            "field": "Microsoft.DocumentDB/databaseAccounts/locations[*].isZoneRedundant",
+            "notequals": false
+          },
+          {
+            "field": "Microsoft.DocumentDB/databaseAccounts/backupPolicy.type",
+            "notequals": "Periodic"
+          },
+          {
+            "field": "Microsoft.DocumentDB/databaseAccounts/backupPolicy.Periodic.periodicModeProperties.backupStorageRedundancy",
+            "equals": "Local"
+          }
+        ]
+      },
+      "then": {
+        "effect": "audit"
+      }
+    }
+  },
+  
+}
