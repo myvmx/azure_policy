@@ -1,0 +1,41 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Web/serverfarms"
+        },
+        {
+          "anyof": [
+            {
+              "field": "Microsoft.Web/serverfarms/sku.name",
+              "notequals": "B1"
+            },
+            {
+              "field": "Microsoft.Web/serverfarms/sku.tier",
+              "notequals": "Basic"
+            },
+            {
+              "field": "Microsoft.Web/serverfarms/sku.size",
+              "notequals": "B1"
+            },
+            {
+              "field": "Microsoft.Web/serverfarms/sku.family",
+              "notequals": "B"
+            },
+            {
+              "field": "Microsoft.Web/serverfarms/sku.capacity",
+              "notequals": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
