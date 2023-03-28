@@ -1,0 +1,33 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.AppConfiguration/configurationStores"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "Microsoft.AppConfiguration/configurationStores/sku.name",
+              "notequals": "Standard"
+            },
+            {
+              "field": "Microsoft.AppConfiguration/configurationStores/softDeleteRetentionInDays",
+              "notequals": "1"
+            },
+            {
+              "field": "Microsoft.AppConfiguration/configurationStores/enablePurgeProtection",
+              "notequals": "false"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}
